@@ -24,6 +24,7 @@
     <ul>
         <li ng-repeat="list in lists">
             <span ng-click="openList(list.id)" >{{ list.title }}</span>
+            <span ng-click="getItem(list.id)">{{list.title}} - Click Me</span>
         </li>
     </ul>
 </script>

@@ -1,4 +1,4 @@
-var app = angular.module("app", ["ngRoute"]);
+var app = angular.module("app", ["ngRoute", "ngResource"]);
 
 app.config(function($routeProvider){
     $routeProvider
@@ -12,7 +12,7 @@ app.config(function($routeProvider){
 
 });
 
-app.service("ListService", ["$http", function ($http) {
+app.service("ListService", ["ListResource", function (List) {
 
     var data = [
         {
@@ -40,8 +40,8 @@ app.service("ListService", ["$http", function ($http) {
     ];
 
     this.getLists = function () {
-        return $http.get('/api/list');
-        //return data;
+        //return $http.get('/api/list');
+        return List.query();
     };
 
     this.save = function(list){
@@ -54,16 +54,29 @@ app.service("ListService", ["$http", function ($http) {
 }]);
 
 app.controller("ListsController", ["$scope", "ListService", "$location", function($scope, ListService, $location) {
-    $scope.lists = [];
 
-    ListService.getLists().then(function(response){
-        $scope.lists = response.data;
-    });
+    $scope.lists = ListService.getLists();
 
     $scope.openList = function(id){
         $location.path("/list/" + id);
     }
+
+    $scope.getItem = function(id){
+        var list = $scope.lists[id -1];
+        console.log(list);
+    }
 }]);
+
+app.factory("ListResource", function ($resource) {
+    return $resource('/api/list/:id', {
+        id: '@id'
+    }, {
+        save: {
+            method: 'PUT'
+        }
+    });
+});
+
 
 app.controller("ListController", ["$scope", "ListService", "$routeParams", "$location", function($scope, ListService, $routeParams, $location) {
 
