@@ -49,7 +49,7 @@ app.service("ListService", ["ListResource", function (List) {
     };
 
     this.getList = function(id){
-        return data[id-1];
+        return List.get({id:id});
     }
 }]);
 
@@ -61,10 +61,6 @@ app.controller("ListsController", ["$scope", "ListService", "$location", functio
         $location.path("/list/" + id);
     };
 
-    $scope.getItem = function(id){
-        var list = $scope.lists[id -1];
-        console.log(list);
-    }
 }]);
 
 app.factory("ListResource", function ($resource) {

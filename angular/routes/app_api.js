@@ -30,6 +30,7 @@ var data = {
 var JelloServer = function (app) {
 
     var server = {};
+    var _ = require('underscore');
 
     app.get('/api/list', function (req, res) {
         res.json(data.lists);
@@ -38,12 +39,16 @@ var JelloServer = function (app) {
     app.get('/api/list/:id', function (req, res) {
         var id = req.params.id;
         if (id >= 0 && id < data.lists.length) {
-            res.json({
-                list: data.list[id]
+            var lists = _.map(data.lists, function (list) {
+                if (list.id == id) {
+                    return list
+                }
             });
-        } else {
-            res.json(false);
+            if (lists.length > 0) {
+                return  res.json(lists[0]);
+            }
         }
+        res.json(false);
     });
 
     app.post('/api/list', function (req, res) {
