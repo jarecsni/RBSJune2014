@@ -59,7 +59,7 @@ app.controller("ListsController", ["$scope", "ListService", "$location", functio
 
     $scope.openList = function(id){
         $location.path("/list/" + id);
-    }
+    };
 
     $scope.getItem = function(id){
         var list = $scope.lists[id -1];
@@ -81,7 +81,6 @@ app.factory("ListResource", function ($resource) {
 app.controller("ListController", ["$scope", "ListService", "$routeParams", "$location", function($scope, ListService, $routeParams, $location) {
 
     setInterval(function () {
-        console.log("new time");
         $scope.$apply(function () {
             $scope.currentTime = new Date().toLocaleTimeString();
         })
