@@ -1,6 +1,6 @@
 describe("ListsController", function () {
     var app, issues, controller, scope;
-    var httpBackend;
+    var $httpBackend;
 
     beforeEach(function () {
         module("app");
@@ -8,8 +8,8 @@ describe("ListsController", function () {
 
     beforeEach(inject(function ($controller, $rootScope, $location, ListService, _$httpBackend_) {
         scope = $rootScope.$new();
-        httpBackend = _$httpBackend_;
-        httpBackend.expectGET("/api/list").respond(200, [{},{}]);
+        $httpBackend = _$httpBackend_;
+        $httpBackend.expectGET("/api/list").respond(200, [{},{}]);
         controller = $controller('ListsController', {$location: $location, ListService: ListService, $scope: scope});
     }));
 
@@ -17,9 +17,9 @@ describe("ListsController", function () {
         expect(controller).toBeDefined();
     });
 
-    it("should call issuesService to get current issues", inject(function($rootScope){
+    it("should call listService to get current list", inject(function($rootScope){
         $rootScope.$apply();
-        httpBackend.flush();
+        $httpBackend.flush();
         expect(scope.lists.length).toBe(2);
     }));
 });
